@@ -20,6 +20,7 @@ window.APP_CONFIG = {
   //   { label: "Mountains", image: "images/mountains.jpg" }
   //   { label: "Sea", emoji: "🌊" }
   pairs: [
+     { left: { label: "Dog", image: "images/dog.jpg" },           right: { label: "Cat", image: "images/cat.jpg" } },
     { left: { label: "Coffee", emoji: "☕" },           right: { label: "Tea", emoji: "🍵" } },
     { left: { label: "Early bird", emoji: "🐦" },       right: { label: "Night owl", emoji: "🦉" } },
     { left: { label: "Mountains", emoji: "⛰️" },        right: { label: "Sea", emoji: "🌊" } },
