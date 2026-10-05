@@ -1,0 +1,106 @@
+:root {
+  --paper: #F1F4F9;
+  --surface: #FFFFFF;
+  --ink: #18203A;
+  --muted: #5A6378;
+  --line: #D3D9E5;
+  --left: #2C46B3;     /* cobalt pole */
+  --right: #DFA00C;    /* saffron pole */
+  --danger: #B3261E;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141A29;
+    --surface: #1D2537;
+    --ink: #E8ECF5;
+    --muted: #A1AABF;
+    --line: #34405A;
+    --left: #7D95F4;
+    --right: #F3C03E;
+    --danger: #FF8A80;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, .display { font-family: var(--font-display); line-height: 1.1; margin: 0; }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 3px solid var(--left); outline-offset: 3px; border-radius: 4px; }
+
+.btn {
+  font: 700 1rem/1 var(--font-body);
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  min-height: 48px;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn:not(:disabled):active { transform: translateY(1px); }
+
+.status { font-size: 0.85rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem; }
+.status::before { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--muted); }
+.status[data-state="live"]::before, .status[data-state="polling"]::before { background: #2E9E5B; }
+.status[data-state="error"]::before { background: var(--danger); }
+
+.error-text { color: var(--danger); min-height: 1.5em; margin: 0.5rem 0 0; }
+
+/* ── Poles (shared) ───────────────────────────────── */
+.pole {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; text-align: center;
+}
+.pole img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 18px; }
+.pole .emoji { font-size: 4rem; line-height: 1; }
+.pole-label { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; }
+.pole-left .pole-label { color: var(--left); }
+.pole-right .pole-label { color: var(--right); }
+@media (prefers-color-scheme: light) {
+  .pole-right .pole-label { color: color-mix(in oklab, var(--right) 70%, var(--ink)); }
+}
+
+/* ── Spectrum slider ──────────────────────────────── */
+.spectrum {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 48px; background: transparent; margin: 0; cursor: pointer;
+}
+.spectrum::-webkit-slider-runnable-track {
+  height: 14px; border-radius: 7px;
+  background: linear-gradient(90deg, var(--left), var(--line) 50%, var(--right));
+}
+.spectrum::-moz-range-track {
+  height: 14px; border-radius: 7px;
+  background: linear-gradient(90deg, var(--left), var(--line) 50%, var(--right));
+}
+.spectrum::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 36px; height: 36px; margin-top: -11px; border-radius: 50%;
+  background: var(--surface); border: 5px solid var(--ink);
+  transition: opacity 0.2s;
+}
+.spectrum::-moz-range-thumb {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface); border: 5px solid var(--ink);
+}
+.spectrum.untouched::-webkit-slider-thumb { opacity: 0.45; border-style: dashed; }
+.spectrum.untouched::-moz-range-thumb { opacity: 0.45; border-style: dashed; }
+.spectrum:focus-visible { outline-offset: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

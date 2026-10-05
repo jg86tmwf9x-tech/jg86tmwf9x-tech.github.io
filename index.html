@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>This or that?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; justify-content: center; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+    .wrap { width: 100%; max-width: 34rem; padding: 1.25rem 1.25rem 2rem; display: flex; flex-direction: column; min-height: 100%; }
+    header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; }
+    header h1 { font-size: 1.35rem; font-weight: 800; }
+    .counter { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.75rem; }
+
+    .poles { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.75rem; }
+    .pole { background: var(--surface); border-radius: 22px; padding: 1.25rem 0.75rem; border-bottom: 6px solid; }
+    .pole-left { border-color: var(--left); }
+    .pole-right { border-color: var(--right); }
+    .pole .emoji { font-size: clamp(3.5rem, 18vw, 5rem); }
+
+    .hint { text-align: center; color: var(--muted); margin: 0.25rem 0 1.5rem; min-height: 1.5em; }
+    .btn.send { width: 100%; font-size: 1.1rem; margin-top: 1.5rem; }
+
+    .message { flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 0.75rem; padding: 2rem 0; }
+    .message h2 { font-size: clamp(1.8rem, 8vw, 2.4rem); font-weight: 800; }
+    .message p { color: var(--muted); margin: 0; }
+    .tick { width: 4.5rem; height: 4.5rem; margin: 0 auto 0.5rem; border-radius: 50%;
+            background: linear-gradient(135deg, var(--left), var(--right)); display: grid; place-items: center; }
+    .tick svg { width: 2.2rem; height: 2.2rem; }
+    .id-note { margin-top: auto; padding-top: 2rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1 id="title">This or that?</h1>
+    <span class="status" id="status" data-state="connecting">Connecting</span>
+  </header>
+
+  <section data-view="connecting" class="message">
+    <h2>Connecting…</h2>
+    <p>The first question appears in a moment.</p>
+  </section>
+
+  <section data-view="setup" class="message" hidden>
+    <h2>Not set up yet</h2>
+    <p id="setup-text">Add your Nhost GraphQL URL to config.js and run setup.sql.</p>
+  </section>
+
+  <section data-view="question" hidden>
+    <p class="counter" id="counter"></p>
+    <div class="poles">
+      <div class="pole pole-left" id="left"></div>
+      <div class="pole pole-right" id="right"></div>
+    </div>
+    <label for="slider" class="hint" id="hint" style="display:block">Drag the dot towards your side</label>
+    <input type="range" id="slider" class="spectrum untouched" min="0" max="100" step="1" value="50">
+    <button class="btn send" id="send" disabled>Send answer</button>
+    <p class="error-text" id="vote-error" role="alert"></p>
+  </section>
+
+  <section data-view="voted" class="message" hidden>
+    <div class="tick" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+    </div>
+    <h2>Answer sent</h2>
+    <p id="voted-text">Results appear on the big screen.</p>
+  </section>
+
+  <section data-view="closed" class="message" hidden>
+    <h2>Voting closed</h2>
+    <p>Results are on the big screen. The next pair appears here automatically.</p>
+  </section>
+
+  <section data-view="done" class="message" hidden>
+    <h2>That's all</h2>
+    <p>Thanks for playing.</p>
+  </section>
+
+  <p class="id-note" id="id-note"></p>
+</main>
+
+<script src="config.js"></script>
+<script src="nhost.js"></script>
+<script>
+(function () {
+  const cfg = window.APP_CONFIG;
+  const $ = (s) => document.querySelector(s);
+  const slider = $("#slider"), send = $("#send");
+  document.title = cfg.title;
+  $("#title").textContent = cfg.title;
+
+  // ── Random, anonymous student ID ─────────────────────────────
+  // A fresh random UUID is created whenever the questionnaire is opened in a
+  // new tab. It survives a reload of the same tab (so reloading does not grant
+  // a second vote) but is never tied to the person or the device.
+  const ID_KEY = "icebreaker:studentId";
+  function getStudentId() {
+    let id = null;
+    try { id = sessionStorage.getItem(ID_KEY); } catch (e) {}
+    if (!id) {
+      id = Nhost.uuid();
+      try { sessionStorage.setItem(ID_KEY, id); } catch (e) {}
+    }
+    return id;
+  }
+  const studentId = getStudentId();
+  $("#id-note").textContent = "Anonymous ID " + studentId.slice(0, 8);
+
+  const votedKey = (s) => `icebreaker:voted:${s.run_id}:${s.question_index}`;
+  const hasVoted = (s) => { try { return sessionStorage.getItem(votedKey(s)) !== null; } catch (e) { return false; } };
+  const markVoted = (s) => { try { sessionStorage.setItem(votedKey(s), "1"); } catch (e) {} };
+
+  function show(view) {
+    document.querySelectorAll("[data-view]").forEach((el) => { el.hidden = el.dataset.view !== view; });
+  }
+
+  function renderPole(el, pole) {
+    el.replaceChildren();
+    if (pole.image) {
+      const img = document.createElement("img");
+      img.src = pole.image; img.alt = "";
+      el.append(img);
+    } else if (pole.emoji) {
+      const s = document.createElement("span");
+      s.className = "emoji"; s.textContent = pole.emoji; s.setAttribute("aria-hidden", "true");
+      el.append(s);
+    }
+    const l = document.createElement("span");
+    l.className = "pole-label"; l.textContent = pole.label;
+    el.append(l);
+  }
+
+  let state = null, touched = false;
+
+  function describe(v, pair) {
+    if (v === 50) return "Exactly in the middle";
+    const side = v < 50 ? pair.left.label : pair.right.label;
+    const strength = Math.abs(v - 50);
+    return (strength > 40 ? "Fully " : strength > 20 ? "Clearly " : "Slightly ") + side;
+  }
+
+  function onState(data) {
+    const s = data && data.session_state_by_pk;
+    if (!s) { show("setup"); $("#setup-text").textContent = "The database has no session row yet. Run setup.sql."; return; }
+    const changed = !state || s.run_id !== state.run_id || s.question_index !== state.question_index;
+    state = s;
+    const pair = cfg.pairs[s.question_index];
+    if (!pair) { show("done"); return; }
+
+    if (changed) {
+      renderPole($("#left"), pair.left);
+      renderPole($("#right"), pair.right);
+      $("#counter").textContent = `Pair ${s.question_index + 1} of ${cfg.pairs.length}`;
+      slider.value = 50; touched = false;
+      slider.classList.add("untouched");
+      slider.setAttribute("aria-valuetext", "Not answered yet");
+      $("#hint").textContent = "Drag the dot towards your side";
+      send.disabled = true;
+      $("#vote-error").textContent = "";
+    }
+
+    if (hasVoted(s)) {
+      $("#voted-text").textContent = s.revealed ? "Look at the big screen." : "Results appear on the big screen.";
+      show("voted");
+    } else if (s.revealed) {
+      show("closed");
+    } else {
+      show("question");
+    }
+  }
+
+  slider.addEventListener("input", () => {
+    touched = true;
+    slider.classList.remove("untouched");
+    send.disabled = false;
+    const pair = cfg.pairs[state.question_index];
+    const text = describe(Number(slider.value), pair);
+    slider.setAttribute("aria-valuetext", text);
+    $("#hint").textContent = text;
+  });
+
+  const VOTE = `mutation Vote($run: uuid!, $q: Int!, $sid: uuid!, $v: Int!) {
+    insert_votes(objects: [{ run_id: $run, question_index: $q, student_id: $sid, value: $v }]) { affected_rows }
+  }`;
+
+  send.addEventListener("click", async () => {
+    if (!state || !touched) return;
+    const s = state;
+    send.disabled = true; send.textContent = "Sending…";
+    $("#vote-error").textContent = "";
+    try {
+      await Nhost.gql(VOTE, { run: s.run_id, q: s.question_index, sid: studentId, v: Number(slider.value) });
+      markVoted(s);
+    } catch (e) {
+      if (/uniqu/i.test(e.message)) {
+        markVoted(s); // already counted
+      } else {
+        $("#vote-error").textContent = "Your answer was not sent. Check your connection and press Send answer again.";
+        send.disabled = false;
+      }
+    } finally {
+      send.textContent = "Send answer";
+      onState({ session_state_by_pk: state });
+    }
+  });
+
+  // ── Start ───────────────────────────────────────────────────
+  if (!Nhost.isConfigured()) { show("setup"); return; }
+
+  const status = $("#status");
+  const labels = { live: "Live", polling: "Live", reconnecting: "Reconnecting", error: "Connection problem" };
+  Nhost.live(
+    `subscription { session_state_by_pk(id: 1) { run_id question_index revealed } }`,
+    {}, {}, onState,
+    (st) => { status.dataset.state = st; status.textContent = labels[st] || st; }
+  );
+})();
+</script>
+</body>
+</html>
