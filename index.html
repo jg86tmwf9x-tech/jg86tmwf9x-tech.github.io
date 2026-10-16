@@ -208,7 +208,7 @@
     // Daten laden (JSON oder Fallback)
     async function loadData() {
       try {
-        const response = await fetch('emas-database-sample.json');
+        const response = await fetch('emas-database.json');
         if (response.ok) {
           dbData = await response.json();
         } else {
