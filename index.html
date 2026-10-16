@@ -123,7 +123,7 @@
         "organisation_id": "AT-000245",
         "name": "HERKA GmbH",
         "standort": { "plz_ort": "3851 Kautzen", "bundesland": "Niederösterreich" },
-        "branchenkategorie": { "nace_code": "C 13.2 Weberei", "hauptsektor": "HERSTELLUNG VON WAREN [10 - 33]" },
+        "branchenkategorie": { "nace_code": "C 13.2 Weberei", "hauptsektor": "HERSTELLUNG VON WAREN" },
         "unternehmensgroesse": { "mitarbeiterzahl": 73, "kategorie": "KMU" },
         "webseite": "http://www.herka-frottier.at/",
         "umweltprogramme": [
@@ -151,7 +151,7 @@
         "organisation_id": "AT-000051",
         "name": "Steyr Automotive GmbH",
         "standort": { "plz_ort": "4400 Steyr", "bundesland": "Oberösterreich" },
-        "branchenkategorie": { "nace_code": "C 29.1 Kraftwagen", "hauptsektor": "HERSTELLUNG VON WAREN [10 - 33]" },
+        "branchenkategorie": { "nace_code": "C 29.1 Kraftwagen", "hauptsektor": "HERSTELLUNG VON WAREN" },
         "unternehmensgroesse": { "mitarbeiterzahl": 1000, "kategorie": "Großbetrieb" },
         "webseite": "http://www.steyr-automotive.com/",
         "umweltprogramme": [
@@ -179,7 +179,7 @@
         "organisation_id": "AT-000612",
         "name": "Katholische Privat-Universität Linz (KU Linz)",
         "standort": { "plz_ort": "4020 Linz", "bundesland": "Oberösterreich" },
-        "branchenkategorie": { "nace_code": "P 85.42 Tertiärer Unterricht", "hauptsektor": "ERZIEHUNG UND UNTERRICHT [85]" },
+        "branchenkategorie": { "nace_code": "P 85.42 Tertiärer Unterricht", "hauptsektor": "ERZIEHUNG UND UNTERRICHT" },
         "unternehmensgroesse": { "mitarbeiterzahl": 95, "kategorie": "KMU" },
         "webseite": "http://www.ku-linz.at/",
         "umweltprogramme": [
@@ -218,6 +218,17 @@
         dbData = fallbackData;
       }
       render();
+    }
+
+    // Helper function for HTML Escaping
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     // Filter und Rendering Logik
@@ -260,50 +271,60 @@
           const card = document.createElement('div');
           card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
 
-          card.innerHTML = `
-            <div class="bg-slate-100/80 px-6 py-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-bold text-slate-900">${org.name}</h3>
-                  <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-medium">${org.organisation_id}</span>
-                </div>
-                <p class="text-xs text-slate-500 mt-0.5">
-                  <i class="fa-solid fa-location-dot mr-1"></i>${org.standort.plz_ort} (${org.standort.bundesland}) | 
-                  <i class="fa-solid fa-industry mr-1 ml-2"></i>${org.branchenkategorie.nace_code}
-                </p>
-              </div>
-              <div class="flex gap-2 text-xs">
-                <span class="bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md">${org.unternehmensgroesse.kategorie} (${org.unternehmensgroesse.mitarbeiterzahl} MA)</span>
-                ${org.webseite ? `<a href="\${org.webseite}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md transition"><i class="fa-solid fa-globe mr-1"></i>Website</a>` : ''}
-              </div>
-            </div>
+          let measuresHtml = '';
+          filteredMeasures.forEach(m => {
+            const statusClass = (m.status === 'Abgeschlossen') ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800';
+            
+            let kpiBlock = '';
+            if (m.quantifizierung_kpi) {
+              kpiBlock = '<div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 text-xs text-slate-700 font-mono flex items-center gap-2">' +
+                '<i class="fa-solid fa-chart-line text-emerald-600"></i>' +
+                '<span><strong>KPI / Nutzen:</strong> ' + escapeHtml(m.quantifizierung_kpi) + '</span>' +
+                '</div>';
+            }
 
-            <div class="p-6 divide-y divide-slate-100">
-              ${filteredMeasures.map(m => `
-                <div class="py-4 first:pt-0 last:pb-0 space-y-2">
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                      \${m.umweltaspekt}
-                    </span>
-                    <div class="flex items-center gap-2 text-xs">
-                      <span class="text-slate-500"><i class="fa-regular fa-calendar mr-1"></i>Frist: \${m.zieljahr_frist}</span>
-                      <span class="px-2 py-0.5 rounded font-medium \${m.status === 'Abgeschlossen' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">
-                        \${m.status}
-                      </span>
-                    </div>
-                  </div>
-                  <h4 class="font-semibold text-slate-800 text-sm">Ziel: \${m.umweltziel}</h4>
-                  <p class="text-sm text-slate-600">\\({m.konkrete_massnahme}</p>
-                  \\){m.quantifizierung_kpi ? `
-                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 text-xs text-slate-700 font-mono flex items-center gap-2">
-                      <i class="fa-solid fa-chart-line text-emerald-600"></i>
-                      <span><strong>KPI / Nutzen:</strong> ${m.quantifizierung_kpi}</span>
-                    </div>
-                  ` : ''}
-                </div>
-              `).join('')}
-            </div>
-          `;
+            measuresHtml += '<div class="py-4 first:pt-0 last:pb-0 space-y-2">' +
+              '<div class="flex flex-wrap items-center justify-between gap-2">' +
+                '<span class="text-xs font-semibold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">' +
+                  escapeHtml(m.umweltaspekt) +
+                '</span>' +
+                '<div class="flex items-center gap-2 text-xs">' +
+                  '<span class="text-slate-500"><i class="fa-regular fa-calendar mr-1"></i>Frist: ' + escapeHtml(m.zieljahr_frist) + '</span>' +
+                  '<span class="px-2 py-0.5 rounded font-medium ' + statusClass + '">' +
+                    escapeHtml(m.status) +
+                  '</span>' +
+                '</div>' +
+              '</div>' +
+              '<h4 class="font-semibold text-slate-800 text-sm">Ziel: ' + escapeHtml(m.umweltziel) + '</h4>' +
+              '<p class="text-sm text-slate-600">' + escapeHtml(m.konkrete_massnahme) + '</p>' +
+              kpiBlock +
+            '</div>';
+          });
+
+          const websiteBtn = org.webseite ? 
+            '<a href="' + escapeHtml(org.webseite) + '" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md transition"><i class="fa-solid fa-globe mr-1"></i>Website</a>' : '';
+
+          card.innerHTML = 
+            '<div class="bg-slate-100/80 px-6 py-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">' +
+              '<div>' +
+                '<div class="flex items-center gap-2">' +
+                  '<h3 class="text-lg font-bold text-slate-900">' + escapeHtml(org.name) + '</h3>' +
+                  '<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-medium">' + escapeHtml(org.organisation_id) + '</span>' +
+                '</div>' +
+                '<p class="text-xs text-slate-500 mt-0.5">' +
+                  '<i class="fa-solid fa-location-dot mr-1"></i>' + escapeHtml(org.standort.plz_ort) + ' (' + escapeHtml(org.standort.bundesland) + ') | ' +
+                  '<i class="fa-solid fa-industry mr-1 ml-2"></i>' + escapeHtml(org.branchenkategorie.nace_code) +
+                '</p>' +
+              '</div>' +
+              '<div class="flex gap-2 text-xs">' +
+                '<span class="bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md">' + escapeHtml(org.unternehmensgroesse.kategorie) + ' (' + org.unternehmensgroesse.mitarbeiterzahl + ' MA)</span>' +
+                websiteBtn +
+              '</div>' +
+            '</div>' +
+            '<div class="p-6 divide-y divide-slate-100">' +
+              measuresHtml +
+            '</div>';
+
           resultsContainer.appendChild(card);
         }
       });
