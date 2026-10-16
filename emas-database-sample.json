@@ -1,0 +1,224 @@
+[
+  {
+    "organisation_id": "AT-000245",
+    "name": "HERKA GmbH",
+    "standort": {
+      "adresse": "Herkaweg 1",
+      "plz_ort": "3851 Kautzen",
+      "bundesland": "Niederösterreich"
+    },
+    "branchenkategorie": {
+      "nace_code": "(1.) C 13.2 Weberei  (2.-3.)  ",
+      "hauptsektor": "HERSTELLUNG VON WAREN [10 - 33]"
+    },
+    "unternehmensgroesse": {
+      "mitarbeiterzahl": 73,
+      "kategorie": "KMU"
+    },
+    "webseite": "http://www.herka-frottier.at/",
+    "standortbeschreibung": "Die Fa. HERKA GmbH wurde 1927 als Familienbetrieb gegründet und ist seither als Weberei im Bereich Frottierwaren am Betriebsstandort im niederösterreichischen Waldviertel tätig. Mit 80 Mitarbeitenden (im Innen- und Außendienst) ist die Fa. HERKA GmbH...",
+    "umweltprogramme": [
+      {
+        "massnahme_id": "AT-000245-01",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Erhöhung des Eigenstromanteils aus erneuerbaren Energien",
+        "konkrete_massnahme": "Inbetriebnahme / Leasing einer zweiten PV-Dachanlage (ca. 214 kWp)",
+        "quantifizierung_kpi": "197–199 MWh Ertrag/Jahr, Erhöhung der Autarkie um +17%",
+        "zieljahr_frist": "2024",
+        "status": "In Umsetzung"
+      },
+      {
+        "massnahme_id": "AT-000245-02",
+        "umweltaspekt": "Kreislaufwirtschaft & Abfall",
+        "umweltziel": "Zero-Waste-Produktion & Textilrecycling",
+        "konkrete_massnahme": "Teilnahme am Forschungsprojekt ReSTex (Recycling von Baumwollhandtüchern aus der Industriewäsche)",
+        "quantifizierung_kpi": "Schließen des Textilkreislaufs, Vermeidung von Verschnittabfällen",
+        "zieljahr_frist": "2029",
+        "status": "In Bearbeitung"
+      },
+      {
+        "massnahme_id": "AT-000245-03",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Reduktion des Gebäude-Stromverbrauchs",
+        "konkrete_massnahme": "Umstellung der Beleuchtung in den Hallen Expedit und Näherei auf LED-Technik",
+        "quantifizierung_kpi": "Einsparung von Beleuchtungsstrom ca. 25%",
+        "zieljahr_frist": "2025",
+        "status": "Geplant"
+      }
+    ]
+  },
+  {
+    "organisation_id": "AT-000051",
+    "name": "Steyr Automotive GmbH",
+    "standort": {
+      "adresse": "Schönauerstraße 5 ",
+      "plz_ort": "4400 Steyr",
+      "bundesland": "Oberösterreich"
+    },
+    "branchenkategorie": {
+      "nace_code": "C 29.1 Herstellung von Kraftwagen und Kraftwagenmotoren",
+      "hauptsektor": "HERSTELLUNG VON WAREN [10 - 33]"
+    },
+    "unternehmensgroesse": {
+      "mitarbeiterzahl": 1000,
+      "kategorie": "Großbetrieb"
+    },
+    "webseite": "http://www.steyr-automotive.com",
+    "standortbeschreibung": "Steyr Automotive ist ein oberösterreichisches Unternehmen im Herzen Europa, das in Steyr ein Kompetenzzentrum für die Mobilitätsanforderungen der Zukunft etabliert. Die Technologieoffenheit für nachhaltige Antriebskonzepte in Synergie mit mehr als hu...",
+    "umweltprogramme": [
+      {
+        "massnahme_id": "AT-000051-01",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Steigerung der Energieeffizienz (Ziel: CO2-neutral bis 2035)",
+        "konkrete_massnahme": "Werksweite Umstellung der Hallen- und Außenbeleuchtung inklusive Parkplätze auf LED im Contracting-Modell",
+        "quantifizierung_kpi": "6.000 MWh / Jahr Stromeinsparung",
+        "zieljahr_frist": "2025",
+        "status": "In Umsetzung"
+      },
+      {
+        "massnahme_id": "AT-000051-02",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Reduktion fossiler Emissionen & Autonomie",
+        "konkrete_massnahme": "Errichtung der betriebseigenen Dach-Photovoltaikanlage",
+        "quantifizierung_kpi": "7.284 kWp Panelleistung, ca. 8.000 MWh / Jahr Eigenstrom",
+        "zieljahr_frist": "2024",
+        "status": "Abgeschlossen"
+      },
+      {
+        "massnahme_id": "AT-000051-03",
+        "umweltaspekt": "Gefahrstoffe & Ressourceneffizienz",
+        "umweltziel": "Reduzierung von Lösemitteleinsatz und Transportkilometern",
+        "konkrete_massnahme": "Errichtung einer eigenen Lösemittel-Aufbereitungsanlage (Destillierung) für Spüllösemittel in Halle 35",
+        "quantifizierung_kpi": "90–95% Aufbereitungsrate, Einsparung von ca. 175.000 LKW-km / Jahr",
+        "zieljahr_frist": "2023",
+        "status": "Abgeschlossen"
+      }
+    ]
+  },
+  {
+    "organisation_id": "AT-000612",
+    "name": "Katholische Privat-Universität Linz (KU Linz)",
+    "standort": {
+      "adresse": "Bethlehemstraße 20",
+      "plz_ort": "4020 Linz",
+      "bundesland": "Oberösterreich"
+    },
+    "branchenkategorie": {
+      "nace_code": "P 85.42 Tertiärer Unterricht",
+      "hauptsektor": "ERZIEHUNG UND UNTERRICHT [85]"
+    },
+    "unternehmensgroesse": {
+      "mitarbeiterzahl": 95,
+      "kategorie": "KMU"
+    },
+    "webseite": "http://ku-linz.at/",
+    "standortbeschreibung": "Mitten in der Stadt und mitten im Leben ¿ so präsentiert sich die Katholische Privat-Universität Linz in der Bethlehemstraße. Historisch betrachtet ist die KU Linz die älteste akademische Einrichtung in Oberösterreich. Seit über 300 Jahren wird hier ...",
+    "umweltprogramme": [
+      {
+        "massnahme_id": "AT-000612-01",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Stromeinsparung bei der Beleuchtung",
+        "konkrete_massnahme": "Umrüstung der Beleuchtungskörper und Hörsaalstrahler im H1 und H2 auf LED",
+        "quantifizierung_kpi": "ca. 50% Stromeinsparung für Hörsaalbeleuchtung",
+        "zieljahr_frist": "2023",
+        "status": "Abgeschlossen"
+      },
+      {
+        "massnahme_id": "AT-000612-02",
+        "umweltaspekt": "Beschaffung & Ressourceneffizienz",
+        "umweltziel": "Reduktion des Materialverbrauchs",
+        "konkrete_massnahme": "Verringerung individueller Bürodrucker durch Einrichtung kollektiver Stockwerksdrucker",
+        "quantifizierung_kpi": "Papier-, Toner- & Standby-Stromeinsparung",
+        "zieljahr_frist": "2025",
+        "status": "In Bearbeitung"
+      },
+      {
+        "massnahme_id": "AT-000612-03",
+        "umweltaspekt": "Mobilität",
+        "umweltziel": "Verhaltensänderung & nachhaltige Alltagsmobilität",
+        "konkrete_massnahme": "Teilnahme an der Aktion 'OÖ radelt' & Einbau der Initiative Urban Gardening im Bibliothekshof",
+        "quantifizierung_kpi": "Reduktion der Anreise-Emissionen, Auszeichnung als aktivster Neueinsteiger",
+        "zieljahr_frist": "2025",
+        "status": "In Umsetzung"
+      }
+    ]
+  },
+  {
+    "organisation_id": "AT-000001",
+    "name": "Brauerei Murau eGen",
+    "standort": {
+      "adresse": "Raffaltplatz 19-23",
+      "plz_ort": "8850 Murau",
+      "bundesland": "Steiermark"
+    },
+    "branchenkategorie": {
+      "nace_code": "(1.) G 46.34 Großhandel mit Getränken  (2.) C 11.07 Herstellung von Erfrischungsgetränken; Gewinnung natürlicher Mine...  (3.) C 11.05 Herstellung von Bier ",
+      "hauptsektor": "(1.) HANDEL [46 - 47]  (2.-3.) HERSTELLUNG VON WAREN [10 - 33] "
+    },
+    "unternehmensgroesse": {
+      "mitarbeiterzahl": 180,
+      "kategorie": "KMU"
+    },
+    "webseite": "http://www.murauerbier.at/",
+    "standortbeschreibung": "Die 1. Obermurtaler Brauereigenossenschaft stellt am Standort Murau mit ihren 150 Mitarbeitern und einer 500-jährigen Brautradition sechs verschiedene Biertypen her. Zugleich werden am Standort auch alkoholfreie Getränke (Limonaden, Cola, Fruchtsaftg...",
+    "umweltprogramme": [
+      {
+        "massnahme_id": "AT-000001-01",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "100% fossiltfreie Brauerei / CO2-Guss",
+        "konkrete_massnahme": "Nutzung von Biomasse-Nahwärme und Solarenergie im Sudhausprozess",
+        "quantifizierung_kpi": "Reduktion fossiler CO2-Emissionen um >90%",
+        "zieljahr_frist": "2024",
+        "status": "Abgeschlossen"
+      },
+      {
+        "massnahme_id": "AT-000001-02",
+        "umweltaspekt": "Wasser & Abwasser",
+        "umweltziel": "Reduktion des spezifischen Wasserverbrauchs pro HL Bier",
+        "konkrete_massnahme": "Optimierung der Flaschenwaschanlage und Kreislaufführung des Spülwassers",
+        "quantifizierung_kpi": "Einsparung von ca. 0.5 hl Wasser pro hl Fertiggetränk",
+        "zieljahr_frist": "2025",
+        "status": "In Bearbeitung"
+      }
+    ]
+  },
+  {
+    "organisation_id": "AT-000021",
+    "name": "Silhouette International Schmied AG",
+    "standort": {
+      "adresse": "Ellbognerstraße 24 ",
+      "plz_ort": "4021 Linz",
+      "bundesland": "Oberösterreich"
+    },
+    "branchenkategorie": {
+      "nace_code": "C 32.5 Herstellung von medizinischen und zahnmedizinischen Apparaten und...",
+      "hauptsektor": "HERSTELLUNG VON WAREN [10 - 33]"
+    },
+    "unternehmensgroesse": {
+      "mitarbeiterzahl": 698,
+      "kategorie": "Großbetrieb"
+    },
+    "webseite": "http://www.silhouette-international.com",
+    "standortbeschreibung": "Silhouette International hat es sich zur Aufgabe gemacht mit den Eigenmarken Silhouette, neubau eyewear sowie evil eye, Menschen grenzenlose Seherlebnisse zu ermöglichen – und das in jeder Hinsicht. Als weltweiter Vorreiter bei Premiumbrillen folgt d...",
+    "umweltprogramme": [
+      {
+        "massnahme_id": "AT-000021-01",
+        "umweltaspekt": "Energie & Klimaschutz",
+        "umweltziel": "Erhöhung der erneuerbaren Energieerzeugung am Hauptsitz",
+        "konkrete_massnahme": "Ausbau der Photovoltaikanlage auf dem Fabrikdach in Linz",
+        "quantifizierung_kpi": "Erzeugung von ca. 350 MWh grünem Strom/Jahr",
+        "zieljahr_frist": "2024",
+        "status": "Abgeschlossen"
+      },
+      {
+        "massnahme_id": "AT-000021-02",
+        "umweltaspekt": "Kreislaufwirtschaft & Abfall",
+        "umweltziel": "Vermeidung von Kunststoffabfällen in der Brillenfertigung",
+        "konkrete_massnahme": "Einführung von Biopolymineralien und Recycling von Titankomponenten",
+        "quantifizierung_kpi": "Reduktion von Primär-Kunststoffabfällen um 15%",
+        "zieljahr_frist": "2026",
+        "status": "In Bearbeitung"
+      }
+    ]
+  }
+]
