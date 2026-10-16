@@ -45,7 +45,7 @@
           <div class="mb-5">
             <label class="block text-xs font-medium text-slate-600 uppercase mb-2">Freitextsuche</label>
             <div class="relative">
-              <input type="text" id="search-input" placeholder="z. B. Photovoltaik, LED, Abfall..." 
+              <input type="text" id="search-input" placeholder="z. B. Photovoltaik, LED, Abfall, Murauer..." 
                      class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
               <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
             </div>
@@ -100,7 +100,7 @@
         <div class="flex items-center justify-between bg-white px-6 py-4 rounded-xl border border-slate-200 text-sm">
           <div class="text-slate-600">
             Gefunden: <span id="company-count" class="font-bold text-slate-900">0</span> Organisationen mit 
-            <span id="measure-count" class="font-bold text-emerald-700">0</span> konkreten Maßnahmen
+            <span id="measure-count" class="font-bold text-emerald-700">0</span> konkret erfassten Maßnahmen
           </div>
         </div>
 
@@ -117,109 +117,6 @@
   <script>
     let dbData = [];
 
-    // Fallback-Beispieldaten, falls lokal ohne Webserver geöffnet
-    const fallbackData = [
-      {
-        "organisation_id": "AT-000245",
-        "name": "HERKA GmbH",
-        "standort": { "plz_ort": "3851 Kautzen", "bundesland": "Niederösterreich" },
-        "branchenkategorie": { "nace_code": "C 13.2 Weberei", "hauptsektor": "HERSTELLUNG VON WAREN" },
-        "unternehmensgroesse": { "mitarbeiterzahl": 73, "kategorie": "KMU" },
-        "webseite": "http://www.herka-frottier.at/",
-        "umweltprogramme": [
-          {
-            "massnahme_id": "AT-000245-01",
-            "umweltaspekt": "Energie & Klimaschutz",
-            "umweltziel": "Erhöhung des Eigenstromanteils aus erneuerbaren Energien",
-            "konkrete_massnahme": "Inbetriebnahme / Leasing einer zweiten PV-Dachanlage (ca. 214 kWp)",
-            "quantifizierung_kpi": "197–199 MWh Ertrag/Jahr, Erhöhung der Autarkie um +17%",
-            "zieljahr_frist": "2024",
-            "status": "In Umsetzung"
-          },
-          {
-            "massnahme_id": "AT-000245-02",
-            "umweltaspekt": "Kreislaufwirtschaft & Abfall",
-            "umweltziel": "Zero-Waste-Produktion & Textilrecycling",
-            "konkrete_massnahme": "Teilnahme am Forschungsprojekt ReSTex (Recycling von Baumwollhandtüchern aus der Industriewäsche)",
-            "quantifizierung_kpi": "Schließen des Textilkreislaufs, Vermeidung von Verschnittabfällen",
-            "zieljahr_frist": "2029",
-            "status": "In Bearbeitung"
-          }
-        ]
-      },
-      {
-        "organisation_id": "AT-000051",
-        "name": "Steyr Automotive GmbH",
-        "standort": { "plz_ort": "4400 Steyr", "bundesland": "Oberösterreich" },
-        "branchenkategorie": { "nace_code": "C 29.1 Kraftwagen", "hauptsektor": "HERSTELLUNG VON WAREN" },
-        "unternehmensgroesse": { "mitarbeiterzahl": 1000, "kategorie": "Großbetrieb" },
-        "webseite": "http://www.steyr-automotive.com/",
-        "umweltprogramme": [
-          {
-            "massnahme_id": "AT-000051-01",
-            "umweltaspekt": "Energie & Klimaschutz",
-            "umweltziel": "Steigerung der Energieeffizienz (Ziel: CO2-neutral bis 2035)",
-            "konkrete_massnahme": "Werksweite Umstellung der Hallen- und Außenbeleuchtung auf LED im Contracting-Modell",
-            "quantifizierung_kpi": "6.000 MWh / Jahr Stromeinsparung",
-            "zieljahr_frist": "2025",
-            "status": "In Umsetzung"
-          },
-          {
-            "massnahme_id": "AT-000051-03",
-            "umweltaspekt": "Gefahrstoffe & Emissionen",
-            "umweltziel": "Reduzierung von Lösemitteleinsatz und Transportkilometern",
-            "konkrete_massnahme": "Errichtung einer eigenen Lösemittel-Aufbereitungsanlage für Spüllösemittel in Halle 35",
-            "quantifizierung_kpi": "90–95% Aufbereitungsrate, Einsparung von ca. 175.000 LKW-km / Jahr",
-            "zieljahr_frist": "2023",
-            "status": "Abgeschlossen"
-          }
-        ]
-      },
-      {
-        "organisation_id": "AT-000612",
-        "name": "Katholische Privat-Universität Linz (KU Linz)",
-        "standort": { "plz_ort": "4020 Linz", "bundesland": "Oberösterreich" },
-        "branchenkategorie": { "nace_code": "P 85.42 Tertiärer Unterricht", "hauptsektor": "ERZIEHUNG UND UNTERRICHT" },
-        "unternehmensgroesse": { "mitarbeiterzahl": 95, "kategorie": "KMU" },
-        "webseite": "http://www.ku-linz.at/",
-        "umweltprogramme": [
-          {
-            "massnahme_id": "AT-000612-01",
-            "umweltaspekt": "Energie & Klimaschutz",
-            "umweltziel": "Stromeinsparung bei der Beleuchtung",
-            "konkrete_massnahme": "Umrüstung der Beleuchtungskörper und Hörsaalstrahler im H1 und H2 auf LED",
-            "quantifizierung_kpi": "ca. 50% Stromeinsparung für Hörsaalbeleuchtung",
-            "zieljahr_frist": "2023",
-            "status": "Abgeschlossen"
-          },
-          {
-            "massnahme_id": "AT-000612-03",
-            "umweltaspekt": "Mobilität & Fuhrpark",
-            "umweltziel": "Verhaltensänderung & nachhaltige Alltagsmobilität",
-            "konkrete_massnahme": "Teilnahme an der Aktion 'OÖ radelt' & Initiative Urban Gardening im Bibliothekshof",
-            "quantifizierung_kpi": "Reduktion der Anreise-Emissionen, Auszeichnung als aktivster Neueinsteiger",
-            "zieljahr_frist": "2025",
-            "status": "In Umsetzung"
-          }
-        ]
-      }
-    ];
-
-    // Daten laden (JSON oder Fallback)
-    async function loadData() {
-      try {
-        const response = await fetch('emas_database.json');
-        if (response.ok) {
-          dbData = await response.json();
-        } else {
-          dbData = fallbackData;
-        }
-      } catch (e) {
-        dbData = fallbackData;
-      }
-      render();
-    }
-
     // Helper function for HTML Escaping
     function escapeHtml(str) {
       if (!str) return '';
@@ -231,9 +128,27 @@
         .replace(/'/g, '&#39;');
     }
 
+    // Daten laden (probiert emas_database.json, dann emas-database-sample.json)
+    async function loadData() {
+      try {
+        let response = await fetch('emas_database.json');
+        if (!response.ok) {
+          response = await fetch('emas-database-sample.json');
+        }
+        if (response.ok) {
+          dbData = await response.json();
+        } else {
+          console.error('Konnte keine JSON-Datenbankdatei laden.');
+        }
+      } catch (e) {
+        console.error('Fehler beim Laden oder Parsen der JSON-Datei:', e);
+      }
+      render();
+    }
+
     // Filter und Rendering Logik
     function render() {
-      const query = document.getElementById('search-input').value.toLowerCase();
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
       const aspektFilter = document.getElementById('filter-aspekt').value;
       const bundeslandFilter = document.getElementById('filter-bundesland').value;
       const groesseFilter = document.getElementById('filter-groesse').value;
@@ -245,33 +160,47 @@
       let matchingMeasuresCount = 0;
 
       dbData.forEach(org => {
-        // Filter Organisation
-        const matchBL = !bundeslandFilter || org.standort.bundesland === bundeslandFilter;
-        const matchGroesse = !groesseFilter || org.unternehmensgroesse.kategorie === groesseFilter;
+        // Standort & Größe Checks
+        const orgBL = (org.standort && org.standort.bundesland) ? org.standort.bundesland : '';
+        const orgGroesse = (org.unternehmensgroesse && org.unternehmensgroesse.kategorie) ? org.unternehmensgroesse.kategorie : '';
+
+        const matchBL = !bundeslandFilter || orgBL === bundeslandFilter;
+        const matchGroesse = !groesseFilter || orgGroesse === groesseFilter;
 
         if (!matchBL || !matchGroesse) return;
 
-        // Filter Maßnahmen
-        const filteredMeasures = org.umweltprogramme.filter(m => {
-          const matchAspekt = !aspektFilter || m.umweltaspekt.toLowerCase().includes(aspektFilter.toLowerCase());
+        const measures = org.umweltprogramme || [];
+
+        // Suche & Aspekt-Filterung bei Maßnahmen
+        const filteredMeasures = measures.filter(m => {
+          const matchAspekt = !aspektFilter || (m.umweltaspekt && m.umweltaspekt.toLowerCase().includes(aspektFilter.toLowerCase()));
           const matchQuery = !query || 
-            org.name.toLowerCase().includes(query) ||
-            m.umweltziel.toLowerCase().includes(query) ||
-            m.konkrete_massnahme.toLowerCase().includes(query) ||
-            m.quantifizierung_kpi.toLowerCase().includes(query);
+            (org.name && org.name.toLowerCase().includes(query)) ||
+            (m.umweltziel && m.umweltziel.toLowerCase().includes(query)) ||
+            (m.konkrete_massnahme && m.konkrete_massnahme.toLowerCase().includes(query)) ||
+            (m.quantifizierung_kpi && m.quantifizierung_kpi.toLowerCase().includes(query));
 
           return matchAspekt && matchQuery;
         });
 
+        // Prüfen, ob Organisation selbst zum Suchtext passt
+        const orgMatchesQuery = !query || (org.name && org.name.toLowerCase().includes(query));
+
+        // Wenn Filter aktiv sind: Nur anzeigen, wenn Maßnahmen oder der Name matchen
+        const isFiltered = query || aspektFilter;
+        if (isFiltered && !orgMatchesQuery && filteredMeasures.length === 0) {
+          return;
+        }
+
+        matchingCompanies++;
+        matchingMeasuresCount += filteredMeasures.length;
+
+        // Render Company Card
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let measuresHtml = '';
         if (filteredMeasures.length > 0) {
-          matchingCompanies++;
-          matchingMeasuresCount += filteredMeasures.length;
-
-          // Render Card
-          const card = document.createElement('div');
-          card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
-
-          let measuresHtml = '';
           filteredMeasures.forEach(m => {
             const statusClass = (m.status === 'Abgeschlossen') ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800';
             
@@ -300,33 +229,44 @@
               kpiBlock +
             '</div>';
           });
-
-          const websiteBtn = org.webseite ? 
-            '<a href="' + escapeHtml(org.webseite) + '" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md transition"><i class="fa-solid fa-globe mr-1"></i>Website</a>' : '';
-
-          card.innerHTML = 
-            '<div class="bg-slate-100/80 px-6 py-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">' +
-              '<div>' +
-                '<div class="flex items-center gap-2">' +
-                  '<h3 class="text-lg font-bold text-slate-900">' + escapeHtml(org.name) + '</h3>' +
-                  '<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-medium">' + escapeHtml(org.organisation_id) + '</span>' +
-                '</div>' +
-                '<p class="text-xs text-slate-500 mt-0.5">' +
-                  '<i class="fa-solid fa-location-dot mr-1"></i>' + escapeHtml(org.standort.plz_ort) + ' (' + escapeHtml(org.standort.bundesland) + ') | ' +
-                  '<i class="fa-solid fa-industry mr-1 ml-2"></i>' + escapeHtml(org.branchenkategorie.nace_code) +
-                '</p>' +
-              '</div>' +
-              '<div class="flex gap-2 text-xs">' +
-                '<span class="bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md">' + escapeHtml(org.unternehmensgroesse.kategorie) + ' (' + org.unternehmensgroesse.mitarbeiterzahl + ' MA)</span>' +
-                websiteBtn +
-              '</div>' +
-            '</div>' +
-            '<div class="p-6 divide-y divide-slate-100">' +
-              measuresHtml +
+        } else {
+          measuresHtml = '<div class="py-2 text-xs text-slate-400 italic">' +
+            '<i class="fa-solid fa-circle-info mr-1"></i>Stammdaten erfasst – detailliertes Umweltprogramm befindet sich derzeit in der Auswertung.' +
             '</div>';
-
-          resultsContainer.appendChild(card);
         }
+
+        const websiteBtn = org.webseite ? 
+          '<a href="' + escapeHtml(org.webseite) + '" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md transition"><i class="fa-solid fa-globe mr-1"></i>Website</a>' : '';
+
+        const maInfo = (org.unternehmensgroesse && org.unternehmensgroesse.mitarbeiterzahl) ? 
+          escapeHtml(org.unternehmensgroesse.kategorie) + ' (' + org.unternehmensgroesse.mitarbeiterzahl + ' MA)' : 'Größe k.A.';
+
+        const plzOrt = (org.standort && org.standort.plz_ort) ? escapeHtml(org.standort.plz_ort) : 'Österreich';
+        const bl = (org.standort && org.standort.bundesland) ? escapeHtml(org.standort.bundesland) : '';
+        const nace = (org.branchenkategorie && org.branchenkategorie.nace_code) ? escapeHtml(org.branchenkategorie.nace_code) : 'NACE k.A.';
+
+        card.innerHTML = 
+          '<div class="bg-slate-100/80 px-6 py-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">' +
+            '<div>' +
+              '<div class="flex items-center gap-2">' +
+                '<h3 class="text-lg font-bold text-slate-900">' + escapeHtml(org.name) + '</h3>' +
+                '<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-medium">' + escapeHtml(org.organisation_id) + '</span>' +
+              '</div>' +
+              '<p class="text-xs text-slate-500 mt-0.5">' +
+                '<i class="fa-solid fa-location-dot mr-1"></i>' + plzOrt + (bl ? ' (' + bl + ')' : '') + ' | ' +
+                '<i class="fa-solid fa-industry mr-1 ml-2"></i>' + nace +
+              '</p>' +
+            '</div>' +
+            '<div class="flex gap-2 text-xs">' +
+              '<span class="bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md">' + maInfo + '</span>' +
+              websiteBtn +
+            '</div>' +
+          '</div>' +
+          '<div class="p-6 divide-y divide-slate-100">' +
+            measuresHtml +
+          '</div>';
+
+        resultsContainer.appendChild(card);
       });
 
       document.getElementById('company-count').textContent = matchingCompanies;
